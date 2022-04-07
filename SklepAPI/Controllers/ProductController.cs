@@ -19,24 +19,12 @@ namespace SklepAPI.Controllers
 
         [HttpPost("AddProduct")]
         [Authorize(Roles = "User")]
-        public ActionResult AddProduct([FromBody] ProductDto dto)
-        {
+        public ActionResult AddProduct([FromBody] AddProductDto dto)
+        {  
             _productService.AddProduct(dto);
             return Ok();
         }
 
-        [HttpPut("{ProductId}")]
-        public ActionResult UpdateProduct([FromRoute] int ProductId, [FromBody] ProductDto dto)
-        {
-            _productService.UpdateProduct(ProductId, dto);
-            return Ok();
-        }
 
-        [HttpGet("GetListOfProducts")]
-        public ActionResult <IEnumerable<ProductDto>> GetListOfProducts()
-        {
-            var products = _productService.GetListOfProducts();
-            return Ok(products);
-        }
     }
 }
