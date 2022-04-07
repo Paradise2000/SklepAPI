@@ -60,3 +60,6 @@ C:\Users\mikol\source\repos\SklepAPI\SklepAPI\obj\Debug\net6.0\SklepAPI.pdb
 C:\Users\mikol\source\repos\SklepAPI\SklepAPI\obj\Debug\net6.0\SklepAPI.genruntimeconfig.cache
 C:\Users\mikol\source\repos\SklepAPI\SklepAPI\obj\Debug\net6.0\ref\SklepAPI.dll
 C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Flurl.dll
+C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Flurl.Http.dll
+C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Newtonsoft.Json.dll

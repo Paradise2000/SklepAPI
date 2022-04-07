@@ -1,6 +1,8 @@
-﻿namespace SklepAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SklepAPI.Models
 {
-    public class AddProductDto
+    public class ProductDto
     {
         public string Name { get; set; }
         public int Price { get; set; }
