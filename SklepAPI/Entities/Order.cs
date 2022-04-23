@@ -15,11 +15,14 @@ namespace SklepAPI.Entities
         public int Id { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
+
+        public int DeliveryOptionId { get; set; }
+        public virtual DeliveryOption DeliveryOption { get; set; }
 
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
 
-        public List<OrderDetails> OrdersDetails { get; set; }
+        public virtual List<OrderDetails> OrdersDetails { get; set; }
     }
 }

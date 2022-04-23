@@ -10,10 +10,11 @@ namespace SklepAPI.Services
     public interface IOrderService
     {
         void NewOrder(NewOrderDto dto, int userId);
+        void AddDeliveryOption(DeliveryOptionDto dto);
         IEnumerable<GetUserOrdersDto> GetUsersOrders();
         IEnumerable<GetUserOrdersDto> GetLoggedUserOrders(int userId);
         void ChangeOrderStatus(int orderId ,OrderStatus status);
-        TrackingDto GetTrackingInfo(string TrackingNumber);
+        TrackingDto GetTrackingInfo(string TrackingNumber);      
     }
 
     public class OrderService : IOrderService
@@ -27,111 +28,93 @@ namespace SklepAPI.Services
 
         public void NewOrder(NewOrderDto dto, int userId)
         {
-            var newOrder = new Order()
+            var Order = new Order
             {
                 UserId = userId,
                 OrderDate = DateTime.Now,
-                OrderStatus = OrderStatus.Created, //0 - created
+                OrderStatus = OrderStatus.Created,
+                DeliveryOptionId = dto.DeliveryOptionId,
+                OrdersDetails = dto.ListOfProductsId.Select(p => new OrderDetails
+                {
+                    ProductId = p.productId,
+                    Price = _context.Products.First(w => w.Id == p.productId).Price * p.quantity,
+                    Quantity = p.quantity,
+                    TrackingNumber = "-"
+                }).ToList()
             };
 
-            _context.Orders.Add(newOrder);
-            _context.SaveChanges();
-
-            foreach(var product in dto.ListOfProductsId)
+            foreach(var UpdateElement in dto.ListOfProductsId)
             {
-                var productContext = _context
-                    .Products
-                    .First(r => r.Id == product.productId);
-
-                var newOrderDetails = new OrderDetails()
+                var UpdateStock = _context.Products.First(p => p.Id == UpdateElement.productId);
+                UpdateStock.Stock -= UpdateElement.quantity;
+                if(UpdateStock.Stock < 0)
                 {
-                    OrderId = newOrder.Id,
-                    ProductId = product.productId,
-                    Price = productContext.Price * product.quantity,
-                    Quantity = product.quantity
-                };
-
-                productContext.Stock = productContext.Stock - product.quantity;
-                _context.Products.Update(productContext);
-                _context.OrdersDetails.Add(newOrderDetails);
+                    throw new BadRequestException($"item with id {UpdateElement.productId} is out of stock");
+                }
             }
 
+            _context.Orders.Add(Order);
+            _context.SaveChanges();
+        }
+
+        public void AddDeliveryOption(DeliveryOptionDto dto)
+        {
+            var delivery = new DeliveryOption
+            {
+                DeliveryType = dto.DeliveryType,
+                PricePerDelivery = dto.PricePerDelivery
+            };
+
+            _context.DeliveryOptions.Add(delivery);
             _context.SaveChanges();
         }
 
         public IEnumerable<GetUserOrdersDto> GetUsersOrders()
         {
-            List<GetUserOrdersDto> ListOfOrders = new List<GetUserOrdersDto>();
-
-            var Orders = _context
-                .Orders
-                .OrderBy(r => r.OrderDate)
-                .ToList();
-
-            foreach (var order in Orders)
-            {
-                var orderDto = new GetUserOrdersDto()
+            var ListOfOrders =
+                _context.Orders
+                .Select(o => new GetUserOrdersDto
                 {
-                    OrderId = order.Id,
-                    UserId = order.UserId,
-                    OrderStatus = order.OrderStatus.ToString()
-                };
-
-                var Products = (
-                    from p in _context.Products
-                    join d in _context.OrdersDetails on p.Id equals d.ProductId
-                    where (d.OrderId == order.Id)
-                    select new ProductsGetUserOrdersDto
+                    OrderId = o.Id,
+                    UserId = o.UserId,
+                    OrderStatus = o.OrderStatus.ToString(),
+                    DeliveryType = o.DeliveryOption.DeliveryType,
+                    PricePerDelivery = o.DeliveryOption.PricePerDelivery,
+                    Products = o.OrdersDetails.Select(d => new ProductsGetUserOrdersDto
                     {
-                        ProductId = p.Id,
-                        ProductName = p.Name,
-                        ProductPrice = p.Price,
+                        ProductId = d.ProductId,
+                        ProductName = d.Product.Name,
+                        ProductPrice = d.Product.Price,
                         Quantity = d.Quantity
-                    }).ToList();
+                    }).ToList()
+                });
 
-                orderDto.Products = Products;
-                ListOfOrders.Add(orderDto);
-            }
 
             return ListOfOrders;
         }
 
         public IEnumerable<GetUserOrdersDto> GetLoggedUserOrders(int userId)
-        {
-            List<GetUserOrdersDto> ListOfOrders = new List<GetUserOrdersDto>();
-
-            var Orders = _context
-                .Orders
-                .OrderBy(r => r.OrderDate)
-                .Where(r => r.UserId == userId)
-                .ToList();
-
-            foreach (var order in Orders)
-            {
-                var orderDto = new GetUserOrdersDto()
+        {        
+            var ListOfOrders =
+                _context.Orders
+                .Where(w => w.UserId == userId)
+                .Select(o => new GetUserOrdersDto
                 {
-                    OrderId = order.Id,
-                    UserId = order.UserId,
-                    OrderStatus = order.OrderStatus.ToString()
-                };
-
-                var Products = (
-                    from p in _context.Products
-                    join d in _context.OrdersDetails on p.Id equals d.ProductId
-                    where (d.OrderId == order.Id)
-                    select new ProductsGetUserOrdersDto
+                    OrderId = o.Id,
+                    UserId = o.UserId,
+                    OrderStatus = o.OrderStatus.ToString(),
+                    DeliveryType = o.DeliveryOption.DeliveryType,
+                    PricePerDelivery = o.DeliveryOption.PricePerDelivery,
+                    Products = o.OrdersDetails.Select(d => new ProductsGetUserOrdersDto
                     {
-                        ProductId = p.Id,
-                        ProductName = p.Name,
-                        ProductPrice = p.Price,
+                        ProductId = d.ProductId,
+                        ProductName = d.Product.Name,
+                        ProductPrice = d.Product.Price,
                         Quantity = d.Quantity
-                    }).ToList();
+                    }).ToList()
+                });
 
-                orderDto.Products = Products;
-                ListOfOrders.Add(orderDto);
-            }
-
-            return ListOfOrders;
+            return ListOfOrders;         
         }
 
         public void ChangeOrderStatus(int orderId, OrderStatus status)

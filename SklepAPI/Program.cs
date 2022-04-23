@@ -1,8 +1,12 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SklepAPI;
 using SklepAPI.Entities;
 using SklepAPI.Middleware;
+using SklepAPI.Models;
+using SklepAPI.Models.Validators;
 using SklepAPI.Services;
 using System.Text;
 
@@ -35,9 +39,11 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IValidator<NewOrderDto>, NewOrderDtoValidator>();
+builder.Services.AddScoped<IValidator<ProductsListNewOrderDto>, ProductsListNewOrderDtoValidator>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>(); 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddFluentValidation();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

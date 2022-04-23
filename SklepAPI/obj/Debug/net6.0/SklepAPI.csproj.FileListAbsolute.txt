@@ -63,3 +63,6 @@ C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Microsoft.AspNetC
 C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Flurl.dll
 C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Flurl.Http.dll
 C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\FluentValidation.dll
+C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\FluentValidation.AspNetCore.dll
+C:\Users\mikol\source\repos\SklepAPI\SklepAPI\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll

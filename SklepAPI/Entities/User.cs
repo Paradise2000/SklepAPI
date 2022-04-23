@@ -12,6 +12,6 @@
         public string Street { get; set; }
         public string PostalCode { get; set; }
         public string Role { get; set; }
-        public List<Order> Orders { get; set; }
+        public virtual List<Order> Orders { get; set; }
     }
 }

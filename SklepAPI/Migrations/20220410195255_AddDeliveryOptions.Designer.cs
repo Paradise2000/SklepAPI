@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SklepAPI.Entities;
 
@@ -11,9 +12,10 @@ using SklepAPI.Entities;
 namespace SklepAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220410195255_AddDeliveryOptions")]
+    partial class AddDeliveryOptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,12 +36,12 @@ namespace SklepAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("PricePerDelivery")
-                        .HasColumnType("float");
+                    b.Property<int>("PricePerDelivery")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryOptions", (string)null);
+                    b.ToTable("DeliveryOptions");
                 });
 
             modelBuilder.Entity("SklepAPI.Entities.Order", b =>
@@ -50,7 +52,7 @@ namespace SklepAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("DeliveryOptionId")
+                    b.Property<int?>("DeliveryOptionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
@@ -68,7 +70,7 @@ namespace SklepAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("SklepAPI.Entities.OrderDetails", b =>
@@ -82,8 +84,8 @@ namespace SklepAPI.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -101,7 +103,7 @@ namespace SklepAPI.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrdersDetails", (string)null);
+                    b.ToTable("OrdersDetails");
                 });
 
             modelBuilder.Entity("SklepAPI.Entities.Product", b =>
@@ -123,15 +125,15 @@ namespace SklepAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SklepAPI.Entities.User", b =>
@@ -179,16 +181,14 @@ namespace SklepAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SklepAPI.Entities.Order", b =>
                 {
                     b.HasOne("SklepAPI.Entities.DeliveryOption", "DeliveryOption")
                         .WithMany()
-                        .HasForeignKey("DeliveryOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DeliveryOptionId");
 
                     b.HasOne("SklepAPI.Entities.User", "User")
                         .WithMany("Orders")

@@ -30,10 +30,18 @@ namespace SklepAPI.Controllers
             return Ok();
         }
 
+        [HttpPost("AddDeliveryOption")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddDeliveryOption([FromBody] DeliveryOptionDto dto)
+        {
+            _orderService.AddDeliveryOption(dto);
+            return Ok();
+        }
+
         [HttpGet("GetUsersOrders")]
         [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<GetUserOrdersDto>> GetUsersOrders()
-        {
+        {          
             var Orders = _orderService.GetUsersOrders();
             return Ok(Orders);
         }

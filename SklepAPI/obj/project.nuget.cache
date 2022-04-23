@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "0brNW+pPk6riG+h+5JmtpLOuauzKau0re443tB/ydXud6r8SA7eukPt9KTUavNugapcm0qmQhNFoAPLx+sL2aw==",
+  "dgSpecHash": "hbAQc3F0OmWHbq1zdXztl3zt6NaH01bc8JYP+N9TcjBuNhAuFGWBvyxKCX2JAoMFaueq2kzPO7SMGlUpVLOWyQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mikol\\source\\repos\\SklepAPI\\SklepAPI\\SklepAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\mikol\\.nuget\\packages\\fluentvalidation\\10.4.0\\fluentvalidation.10.4.0.nupkg.sha512",
+    "C:\\Users\\mikol\\.nuget\\packages\\fluentvalidation.aspnetcore\\10.4.0\\fluentvalidation.aspnetcore.10.4.0.nupkg.sha512",
+    "C:\\Users\\mikol\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\10.4.0\\fluentvalidation.dependencyinjectionextensions.10.4.0.nupkg.sha512",
     "C:\\Users\\mikol\\.nuget\\packages\\flurl\\3.0.4\\flurl.3.0.4.nupkg.sha512",
     "C:\\Users\\mikol\\.nuget\\packages\\flurl.http\\3.2.2\\flurl.http.3.2.2.nupkg.sha512",
     "C:\\Users\\mikol\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

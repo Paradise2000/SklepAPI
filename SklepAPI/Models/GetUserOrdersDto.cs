@@ -10,6 +10,8 @@ namespace SklepAPI.Models
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? UserId { get; set; }
         public string OrderStatus { get; set; }
+        public string DeliveryType { get; set; }
+        public double PricePerDelivery { get; set; }
         public List<ProductsGetUserOrdersDto> Products { get; set; }
     }
 }

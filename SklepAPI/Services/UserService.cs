@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SklepAPI.Entities;
+using SklepAPI.Exceptions;
 using SklepAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -55,13 +56,13 @@ namespace SklepAPI.Services
 
             if(user == null)
             {
-                //Exception no user
+                throw new BadRequestException("Email or password is wrong");
             }
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, dto.Password);
             if(result == PasswordVerificationResult.Failed)
             {
-                //Exception bad password
+                throw new BadRequestException("Email or password is wrong");
             }
 
             var claims = new List<Claim>()
